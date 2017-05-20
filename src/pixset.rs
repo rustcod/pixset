@@ -1,11 +1,8 @@
 use std;
 use std::collections::HashMap;
+use tileset;
 
 pub type TexCoords = ([f32; 2], [f32; 2], [f32; 2], [f32; 2]);
-
-lazy_static! {
-    pub static ref PIXSET: Pixset  = Pixset::new(100);
-}
 
 lazy_static! {
     static ref PIX_ORDER: Vec<Pix> =
@@ -142,10 +139,12 @@ impl std::default::Default for Pix {
 pub struct Pixset {
     pub tiles: HashMap<Pix, TexCoords>,
     pub total_tiles: i32,
+    pub tile_size: i32,
+    pub tileset: Vec<u8>,
 }
 
 impl Pixset {
-    pub fn new(total_tiles: i32) -> Pixset {
+    pub fn new(total_tiles: i32, tile_size: i32) -> Pixset {
         let tile_dim = (total_tiles as f32).sqrt() as i32;
 
         let mut tiles: HashMap<Pix, TexCoords> = HashMap::new();
@@ -157,6 +156,8 @@ impl Pixset {
         Pixset {
             tiles: tiles,
             total_tiles: total_tiles,
+            tile_size: tile_size,
+            tileset: tileset::TILESET.to_vec(),
         }
     }
 
