@@ -6,7 +6,7 @@ mod pixset;
 mod tileset;
 
 pub use font::Str;
-pub use pixset::{Pix, Pixset};
+pub use pixset::{Pix, Pixset, TexCoords};
 
 #[cfg(test)]
 mod tests {
