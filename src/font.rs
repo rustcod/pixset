@@ -1,5 +1,5 @@
 use pixset::Pix;
-use std::default::Default;
+use std::str;
 
 impl Pix {
     fn ch_to_pix(ch: char) -> Pix {
@@ -88,15 +88,15 @@ impl<'a> Str<'a> {
 }
 
 pub struct FontIter<'a> {
-    idx: usize,
-    string: &'a str,
+    offset: usize,
+    chars: str::Chars<'a>,
 }
 
 impl<'a> FontIter<'a> {
     fn new(s: &'a str) -> Self {
         FontIter {
-            idx: Default::default(),
-            string: s,
+            offset: 0,
+            chars: s.chars(),
         }
     }
 }
@@ -105,17 +105,13 @@ impl<'a> Iterator for FontIter<'a> {
     type Item = (Pix, (i32, i32));
 
     fn next(&mut self) -> Option<(Pix, (i32, i32))> {
-        if self.idx == self.string.len() {
-            None
-        } else {
-            // TODO can this be faster?
-            let ch = self.string
-                .chars()
-                .nth(self.idx)
-                .expect("no char at that index");
-            let x = self.idx;
-            self.idx += 1;
-            Some((Pix::ch_to_pix(ch), (x as i32, 0)))
+        match self.chars.next() {
+            None => None,
+            Some(ch) => {
+                let offset = self.offset;
+                self.offset += 1;
+                Some((Pix::ch_to_pix(ch), (offset as i32, 0)))
+            }
         }
     }
 }
