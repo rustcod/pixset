@@ -4,70 +4,6 @@ use tileset;
 
 pub type TexCoords = ([f32; 2], [f32; 2], [f32; 2], [f32; 2]);
 
-lazy_static! {
-    static ref PIX_ORDER: Vec<Pix> =
-        vec![
-        Pix::A,
-        Pix::B,
-        Pix::C,
-        Pix::D,
-        Pix::E,
-        Pix::F,
-        Pix::G,
-        Pix::H,
-        Pix::I,
-        Pix::J,
-        Pix::K,
-        Pix::L,
-        Pix::M,
-        Pix::N,
-        Pix::O,
-        Pix::P,
-        Pix::Q,
-        Pix::R,
-        Pix::S,
-        Pix::T,
-        Pix::U,
-        Pix::V,
-        Pix::W,
-        Pix::X,
-        Pix::Y,
-        Pix::Z,
-        Pix::DownArrow,
-        Pix::LeftArrow,
-        Pix::Dood,
-        Pix::Percent,
-        Pix::UpArrow,
-        Pix::RightArrow,
-        Pix::Hash,
-        Pix::Period,
-        Pix::Comma,
-        Pix::Quotes,
-        Pix::Apostrophe,
-        Pix::Colon,
-        Pix::SemiColon,
-        Pix::Empty,
-        Pix::LeftTopCorner,
-        Pix::RightTopCorner,
-        Pix::LeftBottomCorner,
-        Pix::RightBottomCorner,
-        Pix::LeftStraight,
-        Pix::RightStraight,
-        Pix::TopStraight,
-        Pix::BottomStraight,
-        Pix::Zero,
-        Pix::One,
-        Pix::Two,
-        Pix::Three,
-        Pix::Four,
-        Pix::Five,
-        Pix::Six,
-        Pix::Seven,
-        Pix::Eight,
-        Pix::Nine,
-    ];
-}
-
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum Pix {
     A,
@@ -130,6 +66,71 @@ pub enum Pix {
     Nine,
 }
 
+impl Pix {
+    fn pix_order() -> Vec<Pix> {
+        vec![
+            Pix::A,
+            Pix::B,
+            Pix::C,
+            Pix::D,
+            Pix::E,
+            Pix::F,
+            Pix::G,
+            Pix::H,
+            Pix::I,
+            Pix::J,
+            Pix::K,
+            Pix::L,
+            Pix::M,
+            Pix::N,
+            Pix::O,
+            Pix::P,
+            Pix::Q,
+            Pix::R,
+            Pix::S,
+            Pix::T,
+            Pix::U,
+            Pix::V,
+            Pix::W,
+            Pix::X,
+            Pix::Y,
+            Pix::Z,
+            Pix::DownArrow,
+            Pix::LeftArrow,
+            Pix::Dood,
+            Pix::Percent,
+            Pix::UpArrow,
+            Pix::RightArrow,
+            Pix::Hash,
+            Pix::Period,
+            Pix::Comma,
+            Pix::Quotes,
+            Pix::Apostrophe,
+            Pix::Colon,
+            Pix::SemiColon,
+            Pix::Empty,
+            Pix::LeftTopCorner,
+            Pix::RightTopCorner,
+            Pix::LeftBottomCorner,
+            Pix::RightBottomCorner,
+            Pix::LeftStraight,
+            Pix::RightStraight,
+            Pix::TopStraight,
+            Pix::BottomStraight,
+            Pix::Zero,
+            Pix::One,
+            Pix::Two,
+            Pix::Three,
+            Pix::Four,
+            Pix::Five,
+            Pix::Six,
+            Pix::Seven,
+            Pix::Eight,
+            Pix::Nine,
+        ]
+    }
+}
+
 impl std::default::Default for Pix {
     fn default() -> Pix {
         Pix::Empty
@@ -148,7 +149,7 @@ impl Pixset {
         let tile_dim = (total_tiles as f32).sqrt() as i32;
 
         let mut tiles: HashMap<Pix, TexCoords> = HashMap::new();
-        for (i, tile) in PIX_ORDER.iter().enumerate() {
+        for (i, tile) in Pix::pix_order().iter().enumerate() {
             let tex_coords = vec![i as i32 % tile_dim, i as i32 / tile_dim];
             tiles.insert(*tile, get_tex_coords(total_tiles, tex_coords));
         }
