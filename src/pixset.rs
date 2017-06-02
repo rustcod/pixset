@@ -2,7 +2,7 @@ use std;
 use std::collections::HashMap;
 use tileset;
 
-pub type TexCoords = ([f32; 2], [f32; 2], [f32; 2], [f32; 2]);
+pub type TexCoords = (f32, f32, f32, f32);
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum Pix {
@@ -179,5 +179,5 @@ fn get_tex_coords(total_tiles: i32, loc: Vec<i32>) -> TexCoords {
     let bottom = (1.0 - (loc[1] + 1) as f32 * per_tile) + fudge_factor;
     let left = (loc[0] as f32 * per_tile) + fudge_factor;
 
-    ([left, top], [right, top], [right, bottom], [left, bottom])
+    (top, right, bottom, left)
 }
