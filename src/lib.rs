@@ -4,12 +4,10 @@ extern crate pixset_derive;
 mod font;
 mod pix;
 mod tileset;
-mod traits;
 
 pub use font::Str;
-pub use pix::Pix;
+pub use pix::{Pix, PixLike};
 pub use tileset::TILESET;
-pub use traits::PixLike;
 
 #[cfg(test)]
 mod tests {
