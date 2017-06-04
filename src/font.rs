@@ -1,4 +1,4 @@
-use pixset::Pix;
+use pix::Pix;
 use std::str;
 
 impl Pix {
