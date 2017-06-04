@@ -1,6 +1,7 @@
 use std;
+use std::fmt::Debug;
 
-pub trait PixLike: Default {
+pub trait PixLike: Default + Sized + Copy + Clone + Debug {
     fn pix_order() -> Vec<Self>;
     fn tile_size(&self) -> i32;
     fn get(&self) -> (f32, f32, f32, f32);
