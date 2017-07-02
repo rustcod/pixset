@@ -2,6 +2,7 @@
 name = "pixset"
 version = "0.0.1"
 authors = ["Dave O <davidobrite@gmail.com>"]
+license = "MIT OR Apache-2.0"
 
 [dependencies]
 pixset-derive = { path = "pixset-derive" }
