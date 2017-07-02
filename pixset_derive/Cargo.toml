@@ -3,7 +3,7 @@ name = "pixset_derive"
 version = "0.0.1"
 authors = ["Rustcod Project Developers"]
 license = "MIT/Apache-2.0"
-repository = "https://github.com/rustcod/pixset-rs/pixset_derive"
+repository = "https://github.com/rustcod/pixset/pixset_derive"
 description = "Macros 1.1 implementation of #[derive(PixLike)]"
 include = [
   "Cargo.toml",

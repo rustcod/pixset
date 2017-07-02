@@ -1,4 +1,4 @@
-Generates a tileset for gltile-rs from a font, or at least that's the hope.
+Generates a tileset for gltile from a font, or at least that's the hope.
 
 ## License
 
