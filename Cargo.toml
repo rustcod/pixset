@@ -2,7 +2,7 @@
 name = "pixset"
 version = "0.0.1"
 authors = ["Rustcod Project Developers"]
-license = "MIT OR Apache-2.0"
+license = "MIT/Apache-2.0"
 readme = "README.md"
 documentation = "https://docs.rs/pixset-rs"
 repository = "https://github.com/rustcod/pixset-rs"
