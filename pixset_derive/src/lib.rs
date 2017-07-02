@@ -137,10 +137,10 @@ fn get_tex_coords(total_tiles: i32, loc: (i32, i32)) -> (f32, f32, f32, f32) {
     let tile_dim: f32 = (total_tiles as f32).sqrt();
     let per_tile: f32 = 1.0 / tile_dim;
 
-    let top = (1.0 - loc.1 as f32 * per_tile);
-    let right = ((loc.0 + 1) as f32 * per_tile);
-    let bottom = (1.0 - (loc.1 + 1) as f32 * per_tile);
-    let left = (loc.0 as f32 * per_tile);
+    let top = 1.0 - loc.1 as f32 * per_tile;
+    let right = (loc.0 + 1) as f32 * per_tile;
+    let bottom = 1.0 - (loc.1 + 1) as f32 * per_tile;
+    let left = loc.0 as f32 * per_tile;
 
     (top, right, bottom, left)
 }
