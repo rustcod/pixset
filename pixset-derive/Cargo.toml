@@ -1,7 +1,16 @@
 [package]
 name = "pixset-derive"
 version = "0.0.1"
-authors = ["Dave O <davidobrite@gmail.com>"]
+authors = ["Rustcod Project Developers"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/rustcod/pixset-rs/pixset-derive"
+description = "Macros 1.1 implementation of #[derive(PixLike)]"
+include = [
+  "Cargo.toml",
+  "src/**/*.rs",
+  "LICENSE-APACHE",
+  "LICENSE-MIT"
+]
 
 [lib]
 proc-macro = true
