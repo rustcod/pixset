@@ -11,4 +11,4 @@ Generates a tileset from a rusttype compatible font
 """
 
 [dependencies]
-pixset-derive = { path = "pixset-derive", version = "0.0.1" }
+pixset_derive = { path = "pixset_derive", version = "0.0.1" }
