@@ -7,7 +7,7 @@ readme = "README.md"
 documentation = "https://docs.rs/pixset"
 repository = "https://github.com/rustcod/pixset"
 description = """
-Generates a tileset from a rusttype compatible font
+Generates a tileset from a RustType compatible font
 """
 
 [dependencies]
