@@ -1,4 +1,10 @@
+[![](https://travis-ci.org/rustcod/pixset.svg?branch=master)](https://travis-ci.org/rustcod/pixset)
+
 Generates a tileset for gltile from a font, or at least that's the hope.
+
+## [Documentation](https://docs.rs/pixset)
+
+[![](https://docs.rs/pixset/badge.svg)](https://docs.rs/pixset)
 
 ## License
 
@@ -14,3 +20,4 @@ at your option.
 Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any
 additional terms or conditions.
+
