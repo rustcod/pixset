@@ -20,7 +20,7 @@ fn validate_input(ast: &syn::MacroInput) {
         panic!("PixLike only works on Enums, not Structs.")
     }
 
-    if *get_variants(&ast).last().unwrap() != syn::Ident::new("Empty") {
+    if *get_variants(&ast).last().unwrap() != syn::Ident::from("Empty") {
         panic!("Last Enum must be the variant `Empty`, please add it.");
     }
 
@@ -51,7 +51,7 @@ fn impl_pix(ast: &syn::MacroInput) -> quote::Tokens {
                 }
             }
 
-            fn tile_size(&self) -> i32 {
+            fn tile_size(&self) -> (u32, u32) {
                 #size
             }
         }
@@ -64,53 +64,71 @@ fn impl_pix(ast: &syn::MacroInput) -> quote::Tokens {
     }
 }
 
-fn get_size_attr(attrs: &[syn::Attribute]) -> i32 {
-    get_attr(attrs, "size")
+fn get_size_attr(attrs: &[syn::Attribute]) -> (u32, u32) {
+    use syn::{Ident, Lit, MetaItem, NestedMetaItem};
+
+    let eg = "e.g. `#[size(width = \"16\", height = \"24\")]`";
+
+    if let Some(size_attrs) = attrs.iter().find(|attr| match attr.value {
+        MetaItem::List(ref ident, _) => *ident == Ident::from("size"),
+        _ => false,
+    }) {
+        let get_attr = |name: &str, pos: usize| -> u32 {
+            if let MetaItem::List(_, ref vec) = size_attrs.value {
+                if let NestedMetaItem::MetaItem(
+                    MetaItem::NameValue(ref ident, Lit::Str(ref s, _)),
+                ) =
+                    *vec.get(pos)
+                        .unwrap_or_else(|| panic!("Must supply width and height {}", eg))
+                {
+                    if *ident != Ident::from(name) {
+                        panic!("Must supply {} as an attribute {}", name, eg);
+                    }
+                    s.parse::<u32>().unwrap_or_else(|_| {
+                        panic!(
+                            "Parsing to u32 failed on '{}'. Only stringed integers are supported",
+                            s
+                        )
+                    })
+                } else {
+                    unreachable!()
+                }
+            } else {
+                unreachable!()
+            }
+        };
+
+        (get_attr("width", 0), get_attr("height", 1))
+    } else {
+        panic!("Must supply a size attribute e.g. {}", eg)
+    }
 }
 
 fn get_total_attr(attrs: &[syn::Attribute]) -> i32 {
-    get_attr(attrs, "total")
-}
-
-fn get_attr<T>(attrs: &[syn::Attribute], label: &str) -> T
-where
-    <T as std::str::FromStr>::Err: std::fmt::Debug,
-    T: std::str::FromStr,
-{
     use syn::{Attribute, Ident, MetaItem};
 
-    match attrs
-              .iter()
-              .find(
-        |attr| match attr.value {
-            MetaItem::NameValue(ref ident, _) => *ident == Ident::new(label),
-            _ => false,
-        },
-    ) {
-        Some(attr) => {
-            if let Attribute { value: MetaItem::NameValue(_, ref s), .. } = *attr {
-                if let syn::Lit::Str(ref s, _) = *s {
-                    s.parse()
-                        .expect(
-                            &format!(
-                                "Parsing to i32 failed on '{}'. Only Integers are supported",
-                                s
-                            ),
-                        )
-                } else {
-                    panic!("Only String values are supported on Attributes e.g. `#[size = \"16\"]`");
-                }
+    let eg = "e.g. `#[size = \"16\"]`";
+
+    if let Some(attr) = attrs.iter().find(|attr| match attr.value {
+        MetaItem::NameValue(ref ident, _) => *ident == Ident::from("total"),
+        _ => false,
+    }) {
+        if let Attribute { value: MetaItem::NameValue(_, ref s), .. } = *attr {
+            if let syn::Lit::Str(ref s, _) = *s {
+                s.parse().unwrap_or_else(|_| {
+                    panic!(
+                        "Parsing to i32 failed on '{}'. Only stringed Integers are supported",
+                        s
+                    )
+                })
             } else {
-                panic!("Only NameValue Attributes are supported e.g. `#[size = \"16\"]`");
+                panic!("Only String values are supported on Attributes {}", eg);
             }
+        } else {
+            panic!("Only NameValue Attributes are supported {}", eg);
         }
-        None => {
-            panic!(
-                "Must supply a {} attribute e.g. `#[{} = \"16\"]`",
-                label,
-                label
-            )
-        }
+    } else {
+        panic!("Must supply a total attribute {}", eg);
     }
 }
 
@@ -124,12 +142,10 @@ fn get_variants(ast: &syn::MacroInput) -> Vec<syn::Ident> {
 fn get_coords(enum_count: usize, tileset_size: i32) -> Vec<(f32, f32, f32, f32)> {
     let tile_dim = (tileset_size as f32).sqrt() as i32;
     (0..enum_count)
-        .map(
-            |i| {
-                let tex_coords = (i as i32 % tile_dim, i as i32 / tile_dim);
-                get_tex_coords(tileset_size, tex_coords)
-            },
-        )
+        .map(|i| {
+            let tex_coords = (i as i32 % tile_dim, i as i32 / tile_dim);
+            get_tex_coords(tileset_size, tex_coords)
+        })
         .collect::<Vec<_>>()
 }
 
