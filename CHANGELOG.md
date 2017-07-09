@@ -6,9 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.0.2] - 2017-07-09
+
 ### Breaking
 - `pix!` macro takes separate width and height directives (in that order), rather than size
 - `PixLike` `tile_size` now returns `(u32, u32)` rather than `i32` to denote width and height
 
 ### Added
 - support for non-square tilesets
+
+## [0.0.1] - 2017-07-02
+
+### Added
+- initial impl
