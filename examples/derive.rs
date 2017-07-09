@@ -5,7 +5,7 @@ extern crate pixset;
 use pixset::PixLike;
 
 #[derive(Copy, Clone, Debug, PixLike)]
-#[size = "16"]
+#[size(width = "16", height = "16")]
 #[total = "4"]
 pub enum Tiles {
     A,
