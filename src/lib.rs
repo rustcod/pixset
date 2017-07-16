@@ -3,7 +3,7 @@ extern crate pixset_derive;
 
 mod pix;
 
-pub use pix::{Pix, PixLike, PixStr, TILESET};
+pub use pix::{Pix, PixLike, PixStr, Tileset, TILESET};
 
 #[cfg(test)]
 mod tests {

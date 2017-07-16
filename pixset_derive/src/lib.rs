@@ -24,7 +24,6 @@ fn validate_input(ast: &syn::MacroInput) {
         panic!("Last Enum must be the variant `Empty`, please add it.");
     }
 
-    let _ = get_size_attr(&ast.attrs);
     let _ = get_total_attr(&ast.attrs);
 }
 
@@ -34,7 +33,6 @@ fn impl_pix(ast: &syn::MacroInput) -> quote::Tokens {
     let names_2 = iter::repeat(name);
     let variants = get_variants(ast);
     let variants_2 = get_variants(ast);
-    let size = get_size_attr(&ast.attrs);
     let coords = get_coords(variants.len(), get_total_attr(&ast.attrs));
 
     quote! {
@@ -50,10 +48,6 @@ fn impl_pix(ast: &syn::MacroInput) -> quote::Tokens {
                     #(#names_2::#variants_2 => #coords),*
                 }
             }
-
-            fn tile_size(&self) -> (u32, u32) {
-                #size
-            }
         }
 
         impl std::default::Default for #name {
@@ -64,50 +58,10 @@ fn impl_pix(ast: &syn::MacroInput) -> quote::Tokens {
     }
 }
 
-fn get_size_attr(attrs: &[syn::Attribute]) -> (u32, u32) {
-    use syn::{Ident, Lit, MetaItem, NestedMetaItem};
-
-    let eg = "e.g. `#[size(width = \"16\", height = \"24\")]`";
-
-    if let Some(size_attrs) = attrs.iter().find(|attr| match attr.value {
-        MetaItem::List(ref ident, _) => *ident == Ident::from("size"),
-        _ => false,
-    }) {
-        let get_attr = |name: &str, pos: usize| -> u32 {
-            if let MetaItem::List(_, ref vec) = size_attrs.value {
-                if let NestedMetaItem::MetaItem(
-                    MetaItem::NameValue(ref ident, Lit::Str(ref s, _)),
-                ) =
-                    *vec.get(pos)
-                        .unwrap_or_else(|| panic!("Must supply width and height {}", eg))
-                {
-                    if *ident != Ident::from(name) {
-                        panic!("Must supply {} as an attribute {}", name, eg);
-                    }
-                    s.parse::<u32>().unwrap_or_else(|_| {
-                        panic!(
-                            "Parsing to u32 failed on '{}'. Only stringed integers are supported",
-                            s
-                        )
-                    })
-                } else {
-                    unreachable!()
-                }
-            } else {
-                unreachable!()
-            }
-        };
-
-        (get_attr("width", 0), get_attr("height", 1))
-    } else {
-        panic!("Must supply a size attribute e.g. {}", eg)
-    }
-}
-
 fn get_total_attr(attrs: &[syn::Attribute]) -> i32 {
     use syn::{Attribute, Ident, MetaItem};
 
-    let eg = "e.g. `#[size = \"16\"]`";
+    let eg = "e.g. `#[total = \"16\"]`";
 
     if let Some(attr) = attrs.iter().find(|attr| match attr.value {
         MetaItem::NameValue(ref ident, _) => *ident == Ident::from("total"),
