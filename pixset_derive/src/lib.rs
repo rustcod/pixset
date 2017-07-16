@@ -107,7 +107,7 @@ fn get_size_attr(attrs: &[syn::Attribute]) -> (u32, u32) {
 fn get_total_attr(attrs: &[syn::Attribute]) -> i32 {
     use syn::{Attribute, Ident, MetaItem};
 
-    let eg = "e.g. `#[size = \"16\"]`";
+    let eg = "e.g. `#[total = \"16\"]`";
 
     if let Some(attr) = attrs.iter().find(|attr| match attr.value {
         MetaItem::NameValue(ref ident, _) => *ident == Ident::from("total"),
