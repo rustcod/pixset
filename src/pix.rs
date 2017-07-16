@@ -6,6 +6,11 @@ pub trait PixLike: Default + Sized + Copy + Clone + Debug {
     fn get(&self) -> (f32, f32, f32, f32);
 }
 
+pub trait TilesetLike: Sized {
+    fn get_tileset(&self) -> &'static [u8];
+    fn get_tile_size(&self) -> (u32, u32);
+}
+
 #[macro_export]
 macro_rules! pix {
     (tileset => $ts:expr;
@@ -25,6 +30,16 @@ macro_rules! pix {
             tileset: include_bytes!($ts),
             tile_size: ($w, $h),
         };
+
+        impl TilesetLike for &'static Tileset {
+            fn get_tileset(&self) -> &'static [u8] {
+                self.tileset
+            }
+
+            fn get_tile_size(&self) -> (u32, u32) {
+                self.tile_size
+            }
+        }
 
         #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, PixLike)]
         #[total = $t]
