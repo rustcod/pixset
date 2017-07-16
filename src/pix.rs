@@ -3,7 +3,6 @@ use std::fmt::Debug;
 
 pub trait PixLike: Default + Sized + Copy + Clone + Debug {
     fn pix_order() -> Vec<Self>;
-    fn tile_size(&self) -> (u32, u32);
     fn get(&self) -> (f32, f32, f32, f32);
 }
 
@@ -17,10 +16,17 @@ macro_rules! pix {
      $($ch:expr => $e2:ident),+;) => {
         use std::str;
 
-        pub static TILESET: &'static [u8] = include_bytes!($ts);
+        pub struct Tileset {
+            pub tileset: &'static [u8],
+            pub tile_size: (u32, u32),
+        }
+
+        pub static TILESET: Tileset = Tileset {
+            tileset: include_bytes!($ts),
+            tile_size: ($w, $h),
+        };
 
         #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, PixLike)]
-        #[size(width = $w, height = $h)]
         #[total = $t]
         pub enum Pix {
             $($e),+,
@@ -82,8 +88,8 @@ macro_rules! pix {
 
 pix! {
     tileset => "../assets/tileset.png";
-    width => "16";
-    height => "16";
+    width => 16;
+    height => 16;
     total => "100";
     A,
     B,

@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Breaking
+- `pix!` macro now takes ints rather than strings for width and height
+- `TILESET` is now a `Tileset` struct with `tileset` and `tile_size` attributes
+- removed `tile_size` getter from `PixLike`
+
 ## [0.0.2] - 2017-07-09
 
 ### Breaking
