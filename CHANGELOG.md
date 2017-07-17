@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - `TILESET` is now a `Tileset` struct with `tileset` and `tile_size` attributes
 - removed `tile_size` getter from `PixLike`
 
+### Added
+- Added `TilesetLike` trait and `impl`ed it for `TILESET`
+
 ## [0.0.2] - 2017-07-09
 
 ### Breaking
