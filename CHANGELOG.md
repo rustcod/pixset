@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- no longer require last enum in `Pix1` to be `Empty`
+
 ## [0.0.3] - 2017-07-16
 
 ### Breaking

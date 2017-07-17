@@ -20,10 +20,6 @@ fn validate_input(ast: &syn::MacroInput) {
         panic!("PixLike only works on Enums, not Structs.")
     }
 
-    if *get_variants(&ast).last().unwrap() != syn::Ident::from("Empty") {
-        panic!("Last Enum must be the variant `Empty`, please add it.");
-    }
-
     let _ = get_total_attr(&ast.attrs);
 }
 
