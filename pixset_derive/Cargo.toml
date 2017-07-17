@@ -1,6 +1,6 @@
 [package]
 name = "pixset_derive"
-version = "0.0.5"
+version = "0.0.6-pre"
 authors = ["Rustcod Project Developers"]
 license = "MIT/Apache-2.0"
 documentation = "https://docs.rs/pixset_derive/"
